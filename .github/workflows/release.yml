@@ -1,0 +1,21 @@
+---
+name: Release API
+on:
+  push:
+    tags: 
+        - "*"
+jobs:
+  build_and_publish_image:
+    runs-on: ubuntu-latest
+    name: build image and push
+    steps:
+      - uses: actions/chechout@v2
+      - name: login to docker hub
+        run: docker login -u trainingpradip2244 -p ${{secrets.DOCKER_PASSWORD }}
+
+      - name: build image
+        run: docker build --file Dockerfile -t trainingpradip2244/docker-demo:${{github.ref_name}}
+
+      - name: push image to docker hub
+        run: docker push trainingpradip2244/docker-demo:${{github.ref_name}}
+      
